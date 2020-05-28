@@ -52,7 +52,8 @@ class App extends React.Component {
   addItem() {
     const newItem = {
       id: 1 + Math.random(),
-      value: this.state.newItem.slice()
+      value: this.state.newItem.slice(),
+      completed: false
     };
     const list = [...this.state.list];
     list.push(newItem);
@@ -66,6 +67,11 @@ class App extends React.Component {
     const list = [...this.state.list];
     const updatedList = list.filter(item => item.id !== id);
     this.setState({ list: updatedList });
+  }
+
+  updateItem(item) {
+    item.completed = !item.completed;
+    this.forceUpdate();
   }
   
   render() {
@@ -100,8 +106,8 @@ class App extends React.Component {
           <ul>
             {this.state.list.map(item => {
               return (
-                <li key={item.id}>
-                  {item.value}
+                <li>
+                  <span className={'item' + ((item.completed) ? ' completed' : '')} onClick={() => this.updateItem(item)}>{item.value}</span>
                   <button className="btn btn-floating" onClick={() => this.deleteItem(item.id)}>
                     <i class="material-icons">x</i>
                   </button>
